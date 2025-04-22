@@ -1,0 +1,57 @@
+/* 
+  Tailwind CSS Setup Guide:
+  1. Install Tailwind CSS using npm: npm install -D tailwindcss
+  2. Create a tailwind.config.js file in your project root
+  3. Add Tailwind directives to your CSS file (as shown below)
+  4. Run the Tailwind CLI to build your CSS: npx tailwindcss -i ./app/globals.css -o ./app/output.css
+*/
+
+/* Import Tailwind CSS base styles */
+@import "tailwindcss";
+
+/* 
+  CSS Custom Properties (Variables) for theming
+  These variables define the base colors for light mode
+*/
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #3b82f6;
+  --secondary: #10b981;
+}
+
+/* 
+  Theme configuration using Tailwind's @theme directive
+  This maps our CSS variables to Tailwind's theme system
+*/
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* 
+  Dark mode configuration
+  These values override the root variables when dark mode is enabled
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --primary: #60a5fa;
+    --secondary: #34d399;
+  }
+}
+
+/* 
+  Base styles applied to the body element
+  Uses CSS variables for dynamic theming
+*/
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
