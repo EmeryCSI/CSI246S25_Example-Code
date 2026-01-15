@@ -12,7 +12,8 @@ export default async function EditBookPage({
 }: {
   params: { id: string };
 }) {
-  const book = await getBook(params.id);
+  const { id } = await params;
+  const book = await getBook(id);
   if (!book) {
     return <div>Book not found</div>;
   }
@@ -22,7 +23,7 @@ export default async function EditBookPage({
     "use server";
     // Fetch the book again inside the server action to ensure we have all required fields
     // Server actions don't preserve closure context, so we need to re-fetch
-    const currentBook = await getBook(params.id);
+    const currentBook = await getBook(id);
     if (!currentBook) {
       redirect("/books");
       return;
