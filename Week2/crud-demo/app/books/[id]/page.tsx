@@ -12,7 +12,9 @@ export default async function BookDetailsPage({
 }: {
   params: { id: string };
 }) {
-  const book = await getBook(params.id);
+  //params is not an object, it is a promise that resolves to an object
+  const { id } = await params;
+  const book = await getBook(id);
   if (!book) {
     return <div>Book not found</div>;
   }
@@ -21,7 +23,7 @@ export default async function BookDetailsPage({
   async function handleCheckout() {
     "use server";
     // Re-fetch the book inside the server action since closure context isn't preserved
-    const currentBook = await getBook(params.id);
+    const currentBook = await getBook(id);
     if (!currentBook) {
       redirect("/books");
       return;
@@ -35,7 +37,7 @@ export default async function BookDetailsPage({
   async function handleReturn() {
     "use server";
     // Re-fetch the book inside the server action since closure context isn't preserved
-    const currentBook = await getBook(params.id);
+    const currentBook = await getBook(id);
     if (!currentBook) {
       redirect("/books");
       return;
