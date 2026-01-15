@@ -17,26 +17,38 @@ export default async function EditBookPage({
     return <div>Book not found</div>;
   }
 
+  // Server action to handle updating a book
+  async function handleUpdateBook(formData: FormData) {
+    "use server";
+    // Fetch the book again inside the server action to ensure we have all required fields
+    // Server actions don't preserve closure context, so we need to re-fetch
+    const currentBook = await getBook(params.id);
+    if (!currentBook) {
+      redirect("/books");
+      return;
+    }
+    const updatedBook = {
+      id: currentBook.id,
+      title: formData.get("title") as string,
+      author: formData.get("author") as string,
+      isbn: formData.get("isbn") as string,
+      publishedYear: parseInt(formData.get("publishedYear") as string),
+      genre: formData.get("genre") as string,
+      description: formData.get("description") as string,
+      condition: formData.get("condition") as BookCondition,
+      isCheckedOut: currentBook.isCheckedOut,
+      isActive: currentBook.isActive,
+      addedDate: currentBook.addedDate,
+      lastCheckedOutDate: currentBook.lastCheckedOutDate,
+    };
+    await updateBook(updatedBook);
+    redirect("/books");
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Edit Book Page</h2>
-      <form
-        action={async (formData) => {
-          "use server";
-          const updatedBook = {
-            ...book,
-            title: formData.get("title") as string,
-            author: formData.get("author") as string,
-            isbn: formData.get("isbn") as string,
-            publishedYear: parseInt(formData.get("publishedYear") as string),
-            genre: formData.get("genre") as string,
-            description: formData.get("description") as string,
-            condition: formData.get("condition") as BookCondition,
-          };
-          await updateBook(updatedBook);
-          redirect("/books");
-        }}
-      >
+      <form action={handleUpdateBook}>
         <div>
           <input
             type="text"

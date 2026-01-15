@@ -3,30 +3,31 @@ import { BookCondition } from "@/app/types/book";
 import { redirect } from "next/navigation";
 
 export default function AddBookPage() {
+  // Server action to handle adding a new book
+  async function handleAddBook(formData: FormData) {
+    "use server";
+    const book = {
+      id: crypto.randomUUID(),
+      title: formData.get("title") as string,
+      author: formData.get("author") as string,
+      isbn: formData.get("isbn") as string,
+      publishedYear: parseInt(formData.get("publishedYear") as string),
+      genre: formData.get("genre") as string,
+      description: formData.get("description") as string,
+      condition: BookCondition.GOOD,
+      isCheckedOut: false,
+      isActive: true,
+      addedDate: new Date(),
+    };
+    await addBook(book);
+    //redirect to the books page
+    redirect("/books");
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Add Book Page</h2>
-      <form
-        action={async (formData) => {
-          "use server";
-          const book = {
-            id: crypto.randomUUID(),
-            title: formData.get("title") as string,
-            author: formData.get("author") as string,
-            isbn: formData.get("isbn") as string,
-            publishedYear: parseInt(formData.get("publishedYear") as string),
-            genre: formData.get("genre") as string,
-            description: formData.get("description") as string,
-            condition: BookCondition.GOOD,
-            isCheckedOut: false,
-            isActive: true,
-            addedDate: new Date(),
-          };
-          await addBook(book);
-          //redirect to the books page
-          redirect("/books");
-        }}
-      >
+      <form action={handleAddBook}>
         <div>
           <input type="text" name="title" placeholder="Title" required />
         </div>

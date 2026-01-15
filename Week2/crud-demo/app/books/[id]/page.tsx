@@ -16,6 +16,35 @@ export default async function BookDetailsPage({
   if (!book) {
     return <div>Book not found</div>;
   }
+
+  // Server action to handle book checkout
+  async function handleCheckout() {
+    "use server";
+    // Re-fetch the book inside the server action since closure context isn't preserved
+    const currentBook = await getBook(params.id);
+    if (!currentBook) {
+      redirect("/books");
+      return;
+    }
+    await checkoutBook(currentBook.id);
+    //refresh the page after the change
+    redirect(`/books/${currentBook.id}`);
+  }
+
+  // Server action to handle book return
+  async function handleReturn() {
+    "use server";
+    // Re-fetch the book inside the server action since closure context isn't preserved
+    const currentBook = await getBook(params.id);
+    if (!currentBook) {
+      redirect("/books");
+      return;
+    }
+    await returnBook(currentBook.id);
+    //refresh the page after the change
+    redirect(`/books/${currentBook.id}`);
+  }
+
   return (
     <div className="p-4 mb-4 border border-gray-300 rounded-md">
       <h2 className="text-2xl font-bold mb-4">Book Details</h2>
@@ -35,14 +64,7 @@ export default async function BookDetailsPage({
       {/* You can create a form with a server action to talk to the server.
       The form takes an action prop which is a function that will be called when the form is submitted.
       The server action form must be async and must be wrapped in "use server" directive.*/}
-      <form
-        action={async () => {
-          "use server";
-          await checkoutBook(book.id);
-          //refresh the page after the change
-          redirect(`/books/${book.id}`);
-        }}
-      >
+      <form action={handleCheckout}>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
           type="submit"
@@ -50,14 +72,7 @@ export default async function BookDetailsPage({
           Checkout
         </button>
       </form>
-      <form
-        action={async () => {
-          "use server";
-          await returnBook(book.id);
-          //refresh the page after the change
-          redirect(`/books/${book.id}`);
-        }}
-      >
+      <form action={handleReturn}>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
           type="submit"
