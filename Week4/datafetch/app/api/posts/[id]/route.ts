@@ -10,52 +10,55 @@ import { getPostById, updatePost, deletePost } from "@/app/lib/db";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
+  const { id } = await params;
   try {
     // Convert the string ID from the URL to a number for our database function
-    const post = await getPostById(parseInt(params.id));
+    const post = await getPostById(parseInt(id));
     return NextResponse.json(post);
   } catch (error) {
     // If post isn't found or other error occurs, return 404 with error message
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 404 }
+      { status: 404 },
     );
   }
 }
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
+  const { id } = await params;
   try {
     // Parse the JSON body from the request to get the update data
     const updates = await request.json();
     // Update the post and get the updated version back
-    const post = await updatePost(parseInt(params.id), updates);
+    const post = await updatePost(parseInt(id), updates);
     return NextResponse.json(post);
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 404 }
+      { status: 404 },
     );
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
+  const { id } = await params;
   try {
     // Delete the post with the specified ID
-    await deletePost(parseInt(params.id));
+    await deletePost(parseInt(id));
     // Return success message (no content to return since it's deleted)
     return NextResponse.json({ message: "Post deleted successfully" });
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 404 }
+      { status: 404 },
     );
   }
 }
