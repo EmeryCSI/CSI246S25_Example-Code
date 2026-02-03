@@ -45,7 +45,7 @@ export default async function CustomerVehicles({
             <h1 className="text-3xl font-bold mb-2">
               {customer.name}'s Vehicles
             </h1>
-            <p className="text-black">{customer.email}</p>
+            <p className="text-white">{customer.email}</p>
           </div>
           <div className="space-x-4">
             <Link

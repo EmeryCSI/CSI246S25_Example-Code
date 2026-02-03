@@ -1,6 +1,9 @@
+import connectDB from "@/data/db";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  //Verify databse is workign before we build anyting else
+  //await connectDB();
   return (
     <main className="min-h-screen p-8">
       <div className="max-w-2xl mx-auto text-center">

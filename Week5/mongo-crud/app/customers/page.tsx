@@ -4,7 +4,7 @@ import Owner from "@/data/models/Owner";
 
 async function getCustomers() {
   await connectDB();
-  const customers = await Owner.find({}).sort({ name: 1 });
+  const customers = await Owner.find({});
   return customers;
 }
 
