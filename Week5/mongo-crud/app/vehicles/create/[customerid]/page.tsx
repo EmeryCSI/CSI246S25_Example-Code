@@ -16,7 +16,8 @@ export default async function CreateVehicle({
 }: {
   params: { customerid: string };
 }) {
-  const customer = await getCustomer(params.customerid);
+  const { customerid } = await params;
+  const customer = await getCustomer(customerid);
 
   if (!customer) {
     return (

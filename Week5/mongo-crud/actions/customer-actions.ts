@@ -13,7 +13,7 @@ export const createCustomer = async (formData: FormData) => {
     const owner = await Owner.create({ name, email });
     return { success: "Customer created successfully", owner };
   } catch (error) {
-    return { error: "Failed to create customer" };
+    return { error: `Failed to create customer ${error}` };
   }
 };
 
@@ -48,7 +48,7 @@ export const updateCustomer = async (id: string, formData: FormData) => {
     const owner = await Owner.findByIdAndUpdate(
       id,
       { name, email },
-      { new: true }
+      { new: true },
     );
     return { success: "Customer updated successfully", owner };
   } catch (error) {

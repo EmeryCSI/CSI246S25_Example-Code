@@ -16,9 +16,8 @@ export default async function CustomerVehicles({
 }: {
   params: { customerid: string };
 }) {
-  const { customer, vehicles } = await getCustomerAndVehicles(
-    params.customerid
-  );
+  const { customerid } = await params;
+  const { customer, vehicles } = await getCustomerAndVehicles(customerid);
 
   if (!customer) {
     return (
