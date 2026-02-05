@@ -14,10 +14,10 @@ async function getCustomer(customerId: string) {
 export default async function CreateVehicle({
   params,
 }: {
-  params: { customerid: string };
+  params: { customerId: string };
 }) {
-  const { customerid } = await params;
-  const customer = await getCustomer(customerid);
+  const { customerId } = await params;
+  const customer = await getCustomer(customerId);
 
   if (!customer) {
     return (
@@ -40,7 +40,7 @@ export default async function CreateVehicle({
   async function handleCreateVehicle(formData: FormData) {
     "use server";
 
-    const result = await createVehicle(params.customerid, formData);
+    const result = await createVehicle(customerId, formData);
     if (result.success) {
       revalidatePath("/customers");
       redirect("/customers");
