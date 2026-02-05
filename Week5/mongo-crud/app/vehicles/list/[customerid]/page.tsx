@@ -14,10 +14,10 @@ async function getCustomerAndVehicles(customerId: string) {
 export default async function CustomerVehicles({
   params,
 }: {
-  params: { customerid: string };
+  params: { customerId: string };
 }) {
-  const { customerid } = await params;
-  const { customer, vehicles } = await getCustomerAndVehicles(customerid);
+  const { customerId } = await params;
+  const { customer, vehicles } = await getCustomerAndVehicles(customerId);
 
   if (!customer) {
     return (
